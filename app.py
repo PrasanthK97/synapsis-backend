@@ -1,8 +1,6 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
-import torch
-import torchvision.transforms as transforms
 from time import sleep
 import time
 
@@ -15,6 +13,7 @@ def process_image():
 
     # def mock_ml_inference(image_data):
     #     return image_data
+
     file = request.files["image"]
     image = Image.open(file).convert("RGB")
     print(image)
@@ -27,13 +26,15 @@ def process_image():
         "height": image.size[1]
     }
 
+    # Validate file type
     ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
     if(("." in details["filename"] and details["filename"].rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS)== False):
         
-        return {"status": "Failure due to invalid file type"}
+        image_inference_results_data = {"status": "Failure due to invalid file type"}
+        return image_inference_results_data
     
     print(details)
-    output_json = {
+    image_inference_results_data = {
                     "status": "success",
                     "processing_time_ms": 2015,
                     "inference_results": {
@@ -51,6 +52,6 @@ def process_image():
                                           }
                     }
     time.sleep(2)
-    return output_json
+    return image_inference_results_data
 
     
