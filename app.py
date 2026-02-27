@@ -55,6 +55,8 @@ def process_image():
                                             }
                         }
         time.sleep(2)
+        file = None
+        image.close()  # Close the image file
         return jsonify(image_inference_results_data), 200
     
     except Exception as e:
