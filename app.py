@@ -15,13 +15,13 @@ def process_image():
         # def mock_ml_inference(image_data):
         #     return image_data
         if "image" not in request.files:
-            return jsonify({"error": "No image file provided", "code": 400})
+            return jsonify({"error": "No image file provided"}), 400
 
         try:
             file = request.files["image"]
             image = Image.open(file)
         except Exception:
-            return jsonify({"error": "Invalid image file", "code": 400})
+            return jsonify({"error": "Invalid image file"}), 400
             
         details = {
             "filename": file.filename,
@@ -34,7 +34,7 @@ def process_image():
         # Validate file type
         ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "gif", "bmp"}
         if(("." in details["filename"] and details["filename"].rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS)== False):
-            return jsonify({"error": "Invalid file type", "code": 400})
+            return jsonify({"error": "Invalid file type"}), 400
         
         print(details)
         image_inference_results_data = {
@@ -61,7 +61,7 @@ def process_image():
     
     except Exception as e:
         print(f"Error processing image: {e}")
-        return jsonify({"error": "An error occurred while processing the image", "code": 500})
+        return jsonify({"error": "An error occurred while processing the image"}), 500
     
 
 
